@@ -17,28 +17,43 @@
             </div>
             <div class="inputField">
                 <span class="texto">Masa 2 (kg)</span>
-                <input type="number" id="inputMasa2" value="1" step="0.1" />
+                <input type="number" id="inputMasa2" value="2" step="0.1" />
             </div>
             <div class="deslizador">
                 <span class="texto">Constante K1 (N/m)</span>
                 <div class="entradaRango">
-                    <input type="range" id="rangoK1" min="0" max="100" value="50" step="1" />
+                    <input type="range" id="rangoK1" min="0" max="100" value="3" step="1" />
                     <div class="valor" id="valorK1">50</div>
                 </div>
             </div>
             <div class="deslizador">
                 <span class="texto">Constante K2 (N/m)</span>
                 <div class="entradaRango">
-                    <input type="range" id="rangoK2" min="0" max="100" value="50" step="1" />
-                    <div class="valor" id="valorK2">50</div>
+                    <input type="range" id="rangoK2" min="0" max="100" value="5" step="1" />
+                    <div class="valor" id="valorK2">5</div>
                 </div>
             </div>
             <div class="deslizador">
                 <span class="texto">Constante K3 (N/m)</span>
                 <div class="entradaRango">
-                    <input type="range" id="rangoK3" min="0" max="100" value="50" step="1" />
-                    <div class="valor" id="valorK3">50</div>
+                    <input type="range" id="rangoK3" min="0" max="100" value="6" step="1" />
+                    <div class="valor" id="valorK3">5</div>
                 </div>
+            </div>
+            <div class="frecuencia natural 1" id="texto-w1">
+                ω1 =
+            </div>
+            <div class="frecuencia natural 2" id="texto-w2">
+                ω2 =
+            </div>
+            <div class="botones">
+                <a id="botonW">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Calcular frecuencias
+                </a>
             </div>
         </div>
         <div class="vista">
@@ -52,7 +67,14 @@
                     <span></span>
                     <span></span>
                     <span></span>
-                    Iniciar
+                    Iniciar ω1
+                </a>
+                <a id="botonIniciar2">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Iniciar ω2
                 </a>
                 <a id="botonParar">
                     <span></span>
