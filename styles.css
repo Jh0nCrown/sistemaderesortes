@@ -67,14 +67,30 @@ body {
 
 .simulacion {
     margin-bottom: 20px;
+
 }
 
-
-  
-  canvas {
+canvas {
     border: 3px solid #3e3e3e;
     background-color: #f7f8f8;
-  }
+}
+.contenedorSistema {
+    width: 990px;
+    height: 340px;
+    margin: 0 auto; /* Centrar la gráfica */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contenedorGrafica {
+    width: 990px;
+    height: 340px;
+    margin: 0 auto; /* Centrar la gráfica */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .botones {
     display: flex;
     gap: 10px;

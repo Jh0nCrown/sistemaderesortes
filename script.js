@@ -17,15 +17,74 @@ const inputTextoW2 = document.getElementById("texto-w2");
 let resultadoFrecuencia1 = null;
 let resultadoFrecuencia2 = null;
 
-// Graficas
-const canvasGraficaAngulo = document.getElementById("graficaAnguloTiempo");
-const ctxGraficaAngulo = canvasGraficaAngulo.getContext("2d");
+// Gráficas
+const canvasGrafica = document.getElementById("grafica");
+const ctxGrafica = canvasGrafica.getContext("2d");
 
 let animacionActiva = false;
 let requestId;
 let t = 0; // Tiempo para la animación
 let A1 = null;
 let A2 = null;
+
+// Datos para las gráficas
+let dataW1 = { tiempo: [], posicion1: [], posicion2: [] };
+let dataW2 = { tiempo: [], posicion1: [], posicion2: [] };
+let chart = null;
+
+// Crear la gráfica inicial (vacía)
+function crearGrafica() {
+  const data = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Posición Masa 1 vs Tiempo',
+        data: [],
+        borderColor: 'red',
+        fill: false,
+      },
+      {
+        label: 'Posición Masa 2 vs Tiempo',
+        data: [],
+        borderColor: 'blue',
+        fill: false,
+      },
+    ],
+  };
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {
+      scales: {
+        x: {
+          type: 'linear',
+          position: 'bottom',
+          title: {
+            display: true,
+            text: 'Tiempo (s)'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Posición (m)'
+          }
+        }
+      }
+    }
+  };
+
+  chart = new Chart(ctxGrafica, config);
+}
+
+// Actualizar la gráfica con nuevos datos
+function actualizarGrafica(data) {
+  chart.data.labels = data.tiempo;
+  chart.data.datasets[0].data = data.posicion1.map((y, i) => ({ x: data.tiempo[i], y }));
+  chart.data.datasets[1].data = data.posicion2.map((y, i) => ({ x: data.tiempo[i], y }));
+  chart.update();
+}
 
 // Cargar la imagen del resorte
 const resorteImg = new Image();
@@ -52,11 +111,13 @@ resorteImg.onload = function () {
   btnIniciar.addEventListener("click", function () {
     if (!animacionActiva && resultadoFrecuencia1 != null) {
       animacionActiva = true;
-      animarSistema(resultadoFrecuencia1);
+      dataW1 = { tiempo: [], posicion1: [], posicion2: [] }; // Reiniciar datos de la gráfica
+      t = 0;
+      animarSistema(resultadoFrecuencia1, A1, dataW1);
     }
   });
 
-  // Boton para Calcular
+  // Botón para Calcular
   btnCalcular.addEventListener("click", function () {
     hallarFrecuencias();
   });
@@ -65,7 +126,9 @@ resorteImg.onload = function () {
   btnIniciar2.addEventListener("click", function () {
     if (!animacionActiva && resultadoFrecuencia2 != null) {
       animacionActiva = true;
-      animarSistema2(resultadoFrecuencia2);
+      dataW2 = { tiempo: [], posicion1: [], posicion2: [] }; // Reiniciar datos de la gráfica
+      t = 0;
+      animarSistema(resultadoFrecuencia2, A2, dataW2);
     }
   });
 
@@ -117,7 +180,6 @@ resorteImg.onload = function () {
     const w1 = Math.sqrt(x1);
     const w2 = Math.sqrt(x2);
 
-
     // Amplitudes normales para m2 = 1
     const A2_1 = 1; // Amplitud para cuerpo 2 en ω1
     const A2_2 = 1; // Amplitud para cuerpo 2 en ω2
@@ -136,33 +198,28 @@ resorteImg.onload = function () {
     resultadoFrecuencia2 = w2;
   }
 
-  function animarSistema(frecuencia) {
+  function animarSistema(frecuencia, amplitud, data) {
     if (animacionActiva) {
       // Calcular los factores usando la ecuación del movimiento armónico simple
-      const factor1 = A1 * Math.sin(frecuencia * t);
+      const factor1 = amplitud * Math.sin(frecuencia * t);
       const factor2 = 1 * Math.sin(frecuencia * t); // Amplitud de m2 siempre igual a 1
 
-      // Incrementar el tiempo para la próxima iteración
-      t += 0.05; 
-
-      dibujarSistema(factor1, factor2);
-      requestId = requestAnimationFrame(() => animarSistema(frecuencia));
-    }
-  }
-  function animarSistema2(frecuencia) {
-    if (animacionActiva) {
-      // Calcular los factores usando la ecuación del movimiento armónico simple
-      const factor1 = A2 * Math.sin(frecuencia * t);
-      const factor2 = 1 * Math.sin(frecuencia * t); // Amplitud de m2 siempre igual a 1
+      // Guardar datos para la gráfica
+      data.tiempo.push(t);
+      data.posicion1.push(factor1);
+      data.posicion2.push(factor2);
 
       // Incrementar el tiempo para la próxima iteración
-      t += 0.05; 
+      t += 0.05;
 
       dibujarSistema(factor1, factor2);
-      requestId = requestAnimationFrame(() => animarSistema2(frecuencia));
+      actualizarGrafica(data);
+      requestId = requestAnimationFrame(() => animarSistema(frecuencia, amplitud, data));
     }
   }
 
-  // Dibujar el sistema para cuando se cargue la pagina 
-  dibujarSistema(0,0);
+  // Dibujar el sistema para cuando se cargue la página 
+  dibujarSistema(0, 0);
+  crearGrafica(); // Crear la gráfica inicial
 };
+

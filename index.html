@@ -23,7 +23,7 @@
                 <span class="texto">Constante K1 (N/m)</span>
                 <div class="entradaRango">
                     <input type="range" id="rangoK1" min="0" max="100" value="3" step="1" />
-                    <div class="valor" id="valorK1">50</div>
+                    <div class="valor" id="valorK1">3</div>
                 </div>
             </div>
             <div class="deslizador">
@@ -37,7 +37,7 @@
                 <span class="texto">Constante K3 (N/m)</span>
                 <div class="entradaRango">
                     <input type="range" id="rangoK3" min="0" max="100" value="6" step="1" />
-                    <div class="valor" id="valorK3">5</div>
+                    <div class="valor" id="valorK3">6</div>
                 </div>
             </div>
             <div class="frecuencia natural 1" id="texto-w1">
@@ -58,8 +58,12 @@
         </div>
         <div class="vista">
             <div class="simulacion">
-                <canvas id="lienzo" width="390" height="450"> </canvas>
-                <canvas id="graficaAnguloTiempo" width="390" height="460"></canvas>
+                <div class="contenedorSistema">
+                    <canvas id="lienzo" width="390" height="333"> </canvas>
+                </div>
+                <div class="contenedorGrafica">
+                    <canvas id="grafica" width="790" height="360"></canvas>
+                </div>
             </div>
             <div class="botones">
                 <a id="botonIniciar">
@@ -85,9 +89,9 @@
                 </a>
             </div>
         </div>
-       
     </div>
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
+
